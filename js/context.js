@@ -41,10 +41,10 @@ export function readMind(thread, draft) {
 
   if (plan && compliment) {
     return {
-      theirWant: "A yes or a no on dinner. He asked. He should not have to manage your interest.",
-      yourWant: "To accept like a peer, not make the age gap the text.",
-      outcome: "Take the plan, keep it direct, and leave him a real out.",
-      miss: "A heavy compliment from the older man makes dinner feel like a test.",
+      theirWant: "A yes or a no. He is 20 and he asked. He should not have to handle a 52-year-old's interest.",
+      yourWant: "To say yes without making the age gap the text.",
+      outcome: "Accept dinner if you mean it. Leave the out in the sentence.",
+      miss: "Leading with how he looks makes the plan feel like a test.",
     };
   }
   if (plan && asking) {
