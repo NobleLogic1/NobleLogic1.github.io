@@ -59,7 +59,7 @@ function schedule() {
 
 function rememberThread() {
   const parsed = parseThread(threadBox.value);
-  localStorage.setItem("keel-thread", threadBox.value);
+  localStorage.setItem("eupheme-thread", threadBox.value);
   if (!parsed.turns.length) {
     contextStatus.textContent = "No thread yet. Suggestions will only use your line.";
     return;
@@ -222,7 +222,7 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js").catch(() => {});
 }
 
-const savedThread = localStorage.getItem("keel-thread");
+const savedThread = localStorage.getItem("eupheme-thread");
 if (savedThread) threadBox.value = savedThread;
 rememberThread();
 run(draft.value);

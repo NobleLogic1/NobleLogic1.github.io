@@ -1,5 +1,5 @@
 /**
- * Keel — on-device tone reading and register rewrite.
+ * Eupheme — on-device tone reading and register rewrite.
  * No network. Meaning stays; framing changes.
  */
 

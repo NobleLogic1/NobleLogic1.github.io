@@ -1,6 +1,6 @@
 {
-  "name": "Keel",
-  "short_name": "Keel",
+  "name": "Eupheme",
+  "short_name": "Eupheme",
   "description": "Read a message, keep the meaning, choose a better register before you send it.",
   "start_url": "./index.html",
   "scope": "./",
