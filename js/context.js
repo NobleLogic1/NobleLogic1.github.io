@@ -41,10 +41,10 @@ export function readMind(thread, draft) {
 
   if (plan && compliment) {
     return {
-      theirWant: "A yes on the plan. Dinner is the bid, not small talk.",
-      yourWant: "To show you want them, not only the calendar slot.",
-      outcome: "Answer the dinner bid in one short line, then the compliment. Leave them room to reply.",
-      miss: "A compliment alone, or a long text, dodges the ask. They already heard maybe.",
+      theirWant: "A yes or a no on dinner. They asked. They should not have to manage your interest.",
+      yourWant: "To accept without making your age the point of the text.",
+      outcome: "Take the plan, keep the compliment light, and leave a real out.",
+      miss: "A charged compliment from an older man makes the dinner feel like a test.",
     };
   }
   if (plan && asking) {
@@ -107,29 +107,28 @@ export function shapeLine(line, style, thread) {
   if (!["professional", "direct"].includes(style) && words.length > cap) {
     out = words.slice(0, cap).join(" ");
   }
-  if (style === "flirty" && !/[😉😏]/.test(out)) out += " 😏";
-  if (style === "playful" && !/[✨😉]/.test(out)) out += " ✨";
+  if (style === "flirty" || style === "playful") return out;
   return out;
 }
 
 export function moveFor(style) {
-  if (style === "flirty") return "Casual invite, one emoji, room to reply";
-  if (style === "romantic") return "Specific validation, no interview";
-  if (style === "friendly") return "Low-stakes yes, matched to their length";
-  if (style === "playful") return "Light hook, not a monologue";
-  if (style === "professional" || style === "direct") return "Clear ask, no extra scene";
-  return "Short enough to answer";
+  if (style === "flirty") return "Yes, with an easy out. No emoji.";
+  if (style === "romantic") return "Warm, not a spotlight";
+  if (style === "friendly") return "Plan first. Compliment can be skipped.";
+  if (style === "playful") return "Light, and easy to refuse";
+  if (style === "professional" || style === "direct") return "Clear answer, no pressure";
+  return "Short enough to decline";
 }
 
 function shortHook(theirs, style) {
   const lower = theirs.toLowerCase();
   const casual = style !== "professional" && style !== "direct";
   if (/\b(dinner|drinks|coffee|lunch)\b/.test(lower)) {
-    if (style === "flirty") return "i'm down";
+    if (style === "flirty") return "i'm down, if you still want";
     if (style === "romantic") return "i'd like that";
-    if (style === "direct") return "Yes";
+    if (style === "direct") return "Yes, if you still want to.";
     if (style === "professional") return "That works";
-    return casual ? "dinner works" : "Dinner works";
+    return casual ? "dinner works, if you still want" : "Dinner works, if you still want.";
   }
   if (/\b(free|tonight|friday|weekend)\b/.test(lower) && /\?/.test(theirs)) {
     if (style === "flirty") return "for you, yeah";
