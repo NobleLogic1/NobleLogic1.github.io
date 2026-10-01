@@ -28,6 +28,65 @@ export function parseThread(raw) {
   return { turns, them, mine };
 }
 
+export function readMind(thread, draft) {
+  const theirs = (thread?.them?.text || "").trim();
+  const mine = (thread?.mine?.text || "").trim();
+  const line = (draft || "").trim();
+  const blob = `${theirs} ${mine} ${line}`.toLowerCase();
+  const asking = /\?/.test(theirs);
+  const plan = /\b(dinner|drinks|coffee|lunch|friday|tonight|weekend|hang)\b/.test(blob);
+  const compliment = /\b(pretty|cute|hot|beautiful|gorgeous|handsome)\b/.test(line.toLowerCase());
+  const apology = /\b(sorry|quiet|my bad)\b/.test(blob);
+  const work = /\b(deck|meeting|deadline|send)\b/.test(blob);
+
+  if (plan && compliment) {
+    return {
+      theirWant: "A yes on the plan. Dinner is the bid, not small talk.",
+      yourWant: "To show you want them, not only the calendar slot.",
+      outcome: "Take the plan and let the attraction land in the same text.",
+      miss: "A compliment with no answer reads as a dodge. They already heard maybe.",
+    };
+  }
+  if (plan && asking) {
+    return {
+      theirWant: "A clear yes or no. The question is the whole point.",
+      yourWant: mine ? "You already softened it. They are still waiting on the plan." : "To answer without overexplaining.",
+      outcome: "Close the loop on the invite.",
+      miss: "Another vague line keeps them doing the work.",
+    };
+  }
+  if (apology) {
+    return {
+      theirWant: "Repair. They want to know the gap was not indifference.",
+      yourWant: "To own it without a speech.",
+      outcome: "A short sorry that names the thing, then stop.",
+      miss: "A long explanation asks them to comfort you.",
+    };
+  }
+  if (work) {
+    return {
+      theirWant: "The thing, by the time you named.",
+      yourWant: "To ask without sounding like an order.",
+      outcome: "One clear ask. No extra scene.",
+      miss: "Warmth with no deadline still leaves the work floating.",
+    };
+  }
+  if (theirs) {
+    return {
+      theirWant: asking ? "An answer to what they just asked." : "A response to the last thing they actually said.",
+      yourWant: line ? "To say your line without talking past them." : "To reply to them, not to the silence.",
+      outcome: "Answer their last line, then add only what you meant.",
+      miss: "A line that ignores theirs makes the thread feel one-sided.",
+    };
+  }
+  return {
+    theirWant: "No other side yet. This read is only your line.",
+    yourWant: line ? "To send the meaning in a voice you will actually use." : "Nothing drafted.",
+    outcome: "Keep the meaning. Change only the register.",
+    miss: "A polished line that adds facts you did not mean.",
+  };
+}
+
 export function withContext(line, style, thread) {
   if (!thread?.them) return line;
   const hook = shortHook(thread.them.text, style);

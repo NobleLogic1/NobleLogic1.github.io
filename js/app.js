@@ -1,5 +1,5 @@
 import { readLine, rewriteOnly, allStyles, STYLE_META } from "./engine.js";
-import { parseThread } from "./context.js";
+import { parseThread, readMind } from "./context.js";
 
 const draft = document.querySelector("#draft");
 const threadBox = document.querySelector("#thread");
@@ -79,13 +79,13 @@ function run(raw) {
   }
   empty.hidden = true;
   reading.hidden = false;
-  toneEl.textContent = result.analysis.tone;
-  intentEl.textContent = result.analysis.intent;
-  riskEl.textContent = result.thread?.them
-    ? `Using their line: ${result.thread.them.text}`
-    : result.analysis.risks[0];
+  const mind = readMind(result.thread, raw);
+  document.querySelector("#their-want").textContent = mind.theirWant;
+  document.querySelector("#your-want").textContent = mind.yourWant;
+  document.querySelector("#outcome").textContent = mind.outcome;
+  document.querySelector("#miss").textContent = mind.miss;
   selected = 0;
-  paint(result.options);
+  paint(result.options, mind);
   statusEl.textContent = "Tap a line to copy it. Keys 1–3 work too.";
 }
 
@@ -99,7 +99,7 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-function paint(options) {
+function paint(options, mind) {
   optionsEl.replaceChildren();
   options.forEach((option, index) => {
     const card = document.createElement("article");
@@ -119,7 +119,7 @@ function paint(options) {
     const line = document.createElement("p");
     line.textContent = option.text;
     const note = document.createElement("small");
-    note.textContent = option.note;
+    note.textContent = mind?.outcome ? mind.outcome : option.note;
     body.append(title, line, note);
 
     const actions = document.createElement("div");

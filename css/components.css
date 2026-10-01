@@ -99,9 +99,11 @@ textarea::placeholder {
   font-weight: 560;
 }
 
-.reading {
-  display: grid;
-  gap: var(--space-4);
+.miss {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: var(--step--1);
+  max-width: 62ch;
 }
 
 .reading[hidden] {
