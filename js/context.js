@@ -101,21 +101,27 @@ export function withContext(line, style, thread) {
 export function shapeLine(line, style, thread) {
   let out = String(line || "").replace(/\s+/g, " ").trim();
   if (!out) return out;
+  out = out
+    .replace(/\b(u|ur|lol|lmao|idk|rn|btw)\b/gi, "")
+    .replace(/\s+([,])/g, "$1")
+    .replace(/\s+/g, " ")
+    .replace(/, which is\b.*/i, "")
+    .replace(/\s+—\s+.*/g, "")
+    .trim();
   const theirs = thread?.them?.text || "";
   const theirWords = theirs.split(/\s+/).filter(Boolean).length || 6;
   const cap = Math.max(theirWords + 5, 7);
-  const words = out.split(" ");
+  const words = out.split(" ").filter(Boolean);
   if (!["professional", "direct"].includes(style) && words.length > cap) {
     out = words.slice(0, cap).join(" ");
   }
-  if (style === "flirty" || style === "playful") return out;
   return out;
 }
 
 export function moveFor(style) {
-  if (style === "flirty") return "Picture, then a certain yes";
-  if (style === "romantic") return "Contrast: wanted, and inconvenient";
-  if (style === "friendly") return "He completes the picture";
+  if (style === "flirty") return "Yes, then one picture he could say";
+  if (style === "romantic") return "On his mind, then stop";
+  if (style === "friendly") return "The plan, and one quiet detail";
   if (style === "playful") return "Dry, then stop";
   if (style === "professional" || style === "direct") return "The plan, nothing extra";
   return "Short enough that he can answer";
