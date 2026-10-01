@@ -119,7 +119,7 @@ function paint(options, mind) {
     const line = document.createElement("p");
     line.textContent = option.text;
     const note = document.createElement("small");
-    note.textContent = mind?.outcome ? mind.outcome : option.note;
+    note.textContent = option.note;
     body.append(title, line, note);
 
     const actions = document.createElement("div");

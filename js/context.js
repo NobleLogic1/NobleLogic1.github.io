@@ -43,8 +43,8 @@ export function readMind(thread, draft) {
     return {
       theirWant: "A yes on the plan. Dinner is the bid, not small talk.",
       yourWant: "To show you want them, not only the calendar slot.",
-      outcome: "Take the plan and let the attraction land in the same text.",
-      miss: "A compliment with no answer reads as a dodge. They already heard maybe.",
+      outcome: "Answer the dinner bid in one short line, then the compliment. Leave them room to reply.",
+      miss: "A compliment alone, or a long text, dodges the ask. They already heard maybe.",
     };
   }
   if (plan && asking) {
@@ -95,6 +95,30 @@ export function withContext(line, style, thread) {
   const body = line.replace(/^[A-Z]/, (c) => c.toLowerCase()).replace(/[.]+$/, "");
   if (body.toLowerCase().includes(hook.toLowerCase().slice(0, 8))) return line;
   return `${hook}. ${body}`;
+}
+
+export function shapeLine(line, style, thread) {
+  let out = String(line || "").replace(/\s+/g, " ").trim();
+  if (!out) return out;
+  const theirs = thread?.them?.text || "";
+  const theirWords = theirs.split(/\s+/).filter(Boolean).length || 6;
+  const cap = Math.max(theirWords + 5, 7);
+  const words = out.split(" ");
+  if (!["professional", "direct"].includes(style) && words.length > cap) {
+    out = words.slice(0, cap).join(" ");
+  }
+  if (style === "flirty" && !/[😉😏]/.test(out)) out += " 😏";
+  if (style === "playful" && !/[✨😉]/.test(out)) out += " ✨";
+  return out;
+}
+
+export function moveFor(style) {
+  if (style === "flirty") return "Casual invite, one emoji, room to reply";
+  if (style === "romantic") return "Specific validation, no interview";
+  if (style === "friendly") return "Low-stakes yes, matched to their length";
+  if (style === "playful") return "Light hook, not a monologue";
+  if (style === "professional" || style === "direct") return "Clear ask, no extra scene";
+  return "Short enough to answer";
 }
 
 function shortHook(theirs, style) {

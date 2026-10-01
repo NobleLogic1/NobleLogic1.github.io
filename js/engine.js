@@ -57,7 +57,7 @@ const APPEARANCE = {
   stunning: ["stunning", "stunning", "stunning"],
 };
 
-import { parseThread, withContext } from "./context.js";
+import { parseThread, withContext, shapeLine, moveFor } from "./context.js";
 
 export function readLine(raw, contextRaw) {
   const thread = parseThread(contextRaw);
@@ -72,8 +72,8 @@ export function readLine(raw, contextRaw) {
   const options = styles.map((style) => ({
     style,
     label: STYLE_META[style].label,
-    note: thread.them ? `Answers ${thread.them.text}` : STYLE_META[style].note,
-    text: voice(withContext(text ? rewrite(text, style, analysis) : "", style, thread), style),
+    note: moveFor(style),
+    text: shapeLine(voice(withContext(text ? rewrite(text, style, analysis) : "", style, thread), style), style, thread),
   }));
   return { empty: false, analysis, options, thread };
 }
@@ -85,8 +85,8 @@ export function rewriteOnly(raw, style, contextRaw) {
   return {
     style,
     label: STYLE_META[style]?.label || style,
-    note: STYLE_META[style]?.note || "",
-    text: voice(withContext(text ? rewrite(text, style, analysis) : "", style, thread), style),
+    note: moveFor(style),
+    text: shapeLine(voice(withContext(text ? rewrite(text, style, analysis) : "", style, thread), style), style, thread),
   };
 }
 
