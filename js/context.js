@@ -113,9 +113,9 @@ export function shapeLine(line, style, thread) {
 }
 
 export function moveFor(style) {
-  if (style === "flirty") return "Yes, then one unfinished detail";
-  if (style === "romantic") return "Curious, not a speech";
-  if (style === "friendly") return "He picks the next piece";
+  if (style === "flirty") return "Yes, then one warm beat";
+  if (style === "romantic") return "On his mind, not a speech";
+  if (style === "friendly") return "Light charge, then he answers";
   if (style === "playful") return "Dry, then stop";
   if (style === "professional" || style === "direct") return "The plan, nothing extra";
   return "Short enough that he can answer";
