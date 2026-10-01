@@ -220,9 +220,9 @@ function rewriteYouAre(text, style) {
   const adj = m[1].trim().toLowerCase();
   const word = adj.split(" ")[0];
   const pack = APPEARANCE[word] || [adj, adj, adj];
-  if (style === "flirty") return `you look good`;
-  if (style === "romantic") return `you look really good`;
-  if (style === "friendly") return `you look good`;
+  if (style === "flirty") return null;
+  if (style === "romantic") return null;
+  if (style === "friendly") return null;
   if (style === "playful") return `okay but you're ${pack[0]}`;
   if (style === "warm") return `you're ${pack[0]}. just saying`;
   if (style === "direct") return `You're ${pack[0]}.`;

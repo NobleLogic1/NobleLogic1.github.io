@@ -92,6 +92,7 @@ export function withContext(line, style, thread) {
   const hook = shortHook(thread.them.text, style);
   if (!line) return hook;
   if (!hook) return line;
+  if (/^(you('re| are| look)|you're)\b/i.test(line)) return hook;
   const body = line.replace(/^[A-Z]/, (c) => c.toLowerCase()).replace(/[.]+$/, "");
   if (body.toLowerCase().includes(hook.toLowerCase().slice(0, 8))) return line;
   return `${hook}. ${body}`;
@@ -112,23 +113,23 @@ export function shapeLine(line, style, thread) {
 }
 
 export function moveFor(style) {
-  if (style === "flirty") return "Yes, with an easy out. No emoji.";
-  if (style === "romantic") return "Warm, not a spotlight";
-  if (style === "friendly") return "Plan first. Compliment can be skipped.";
-  if (style === "playful") return "Light, and easy to refuse";
-  if (style === "professional" || style === "direct") return "Clear answer, no pressure";
-  return "Short enough to decline";
+  if (style === "flirty") return "Yes, then one unfinished detail";
+  if (style === "romantic") return "Curious, not a speech";
+  if (style === "friendly") return "He picks the next piece";
+  if (style === "playful") return "Dry, then stop";
+  if (style === "professional" || style === "direct") return "The plan, nothing extra";
+  return "Short enough that he can answer";
 }
 
 function shortHook(theirs, style) {
   const lower = theirs.toLowerCase();
   const casual = style !== "professional" && style !== "direct";
   if (/\b(dinner|drinks|coffee|lunch)\b/.test(lower)) {
-    if (style === "flirty") return "i'm down, if you still want";
-    if (style === "romantic") return "i'd like that";
-    if (style === "direct") return "Yes, if you still want to.";
-    if (style === "professional") return "That works";
-    return casual ? "dinner works, if you still want" : "Dinner works, if you still want.";
+    if (style === "flirty") return "Friday works. don't tell me the place yet";
+    if (style === "romantic") return "Friday. I'm curious what you pick";
+    if (style === "direct") return "Friday works.";
+    if (style === "professional") return "Friday works.";
+    return casual ? "Friday can work. you pick the hour" : "Friday can work. You pick the hour.";
   }
   if (/\b(free|tonight|friday|weekend)\b/.test(lower) && /\?/.test(theirs)) {
     if (style === "flirty") return "for you, yeah";
