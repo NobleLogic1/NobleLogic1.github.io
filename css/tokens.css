@@ -1,0 +1,50 @@
+/* Keel tokens. Night ink, brass used once. */
+
+:root {
+  --paper: #121614;
+  --paper-2: #1b211d;
+  --paper-3: #242b26;
+  --ink: #f4efe6;
+  --ink-soft: #b7b0a3;
+  --line: rgba(244, 239, 230, 0.14);
+  --accent: #d6a15a;
+  --accent-ink: #1c140c;
+  --support: #8eae9a;
+
+  --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", serif;
+  --font-body: "Source Sans 3", "Segoe UI", sans-serif;
+
+  --step--1: clamp(0.78rem, 0.74rem + 0.2vw, 0.88rem);
+  --step-0: clamp(1.02rem, 0.98rem + 0.2vw, 1.08rem);
+  --step-1: clamp(1.2rem, 1.08rem + 0.45vw, 1.4rem);
+  --step-2: clamp(1.45rem, 1.2rem + 1vw, 1.9rem);
+  --step-3: clamp(1.9rem, 1.3rem + 2vw, 2.7rem);
+  --step-4: clamp(2.4rem, 1.3rem + 3.2vw, 4.1rem);
+
+  --leading-display: 1.06;
+  --leading-body: 1.55;
+  --measure: 38rem;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+
+  --gutter: clamp(1.15rem, 4vw, 2.5rem);
+  --page: 72rem;
+  --header: 4.25rem;
+  --radius: 14px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ease: linear;
+  }
+}

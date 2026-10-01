@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Keel — keep the meaning, change the register</title>
+  <meta name="description" content="Paste a message. Keel reads the tone and intent, then offers three rewrites that say the same thing in a different voice. Copy or share the one you want into Messages.">
+  <meta property="og:title" content="Keel — keep the meaning, change the register">
+  <meta property="og:description" content="Three ways to say the line you almost sent. On your phone. Nothing uploaded.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#121614">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,640&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to the studio</a>
+  <header class="site-header">
+    <a class="brand" href="index.html">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="7" fill="#1b211d"/>
+        <path d="M16 5v22" stroke="#d6a15a" stroke-width="1.6"/>
+        <path d="M10 16c2.2 3.4 9.8 3.4 12 0" fill="none" stroke="#f4efe6" stroke-width="1.6"/>
+      </svg>
+      Keel
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html" aria-current="page">Studio</a>
+      <a href="how.html">Messages</a>
+    </nav>
+  </header>
+
+  <main id="main" class="shell studio">
+    <section class="mast">
+      <p class="eyebrow">Message studio</p>
+      <h1>Say the same thing in a voice you will send.</h1>
+      <p class="lede">Paste the line. Keel names the tone and the intent, then writes three registers that keep the meaning.</p>
+      <p class="side-note"><strong>Both sides, only if you hand them over.</strong> Apple does not let a keyboard read the transcript. Paste the thread, or drop a screenshot. Keel keeps that context on the device and uses it when it rewrites your line.</p>
+    </section>
+
+    <section class="work" aria-label="Rewrite studio">
+      <form class="composer" id="composer">
+        <label for="thread">The thread, both sides</label>
+        <textarea id="thread" name="thread" rows="5">Them: are you free Friday?
+Me: maybe
+Them: dinner if you are</textarea>
+        <div class="composer-bar">
+          <label class="chip" for="shot">Screenshot of the thread
+            <input id="shot" type="file" accept="image/*" hidden>
+          </label>
+          <p class="empty-copy" id="context-status">No thread yet. Suggestions will only use your line.</p>
+        </div>
+        <label for="draft">The line you almost sent</label>
+        <textarea id="draft" name="draft" rows="3" autocomplete="off" enterkeyhint="done">you're pretty</textarea>
+        <div class="composer-bar">
+          <div class="hints" role="group" aria-label="Try a line">
+            <button type="button" class="chip" data-sample="you’re pretty">you’re pretty</button>
+            <button type="button" class="chip" data-sample="can you send the deck by noon">send the deck</button>
+            <button type="button" class="chip" data-sample="sorry I went quiet">sorry I went quiet</button>
+            <button type="button" class="chip" data-sample="dinner Friday?">dinner Friday?</button>
+          </div>
+          <button class="btn" type="submit">Read the line</button>
+        </div>
+      </form>
+
+      <p class="empty-copy" id="empty">Three options appear here. Pick one to copy it.</p>
+
+      <section class="reading" id="reading" hidden aria-live="polite">
+        <dl class="analysis">
+          <div>
+            <dt>Tone</dt>
+            <dd id="tone"></dd>
+          </div>
+          <div>
+            <dt>Intent</dt>
+            <dd id="intent"></dd>
+          </div>
+          <div>
+            <dt>What it risks</dt>
+            <dd id="risk"></dd>
+          </div>
+        </dl>
+        <div class="options" id="options" role="listbox" aria-label="Alternative phrasings"></div>
+        <p class="status" id="status" role="status"></p>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Keel holds the meaning still. Register is the only thing that moves.</p>
+    <p><a href="how.html">How this sits next to iMessage</a></p>
+  </footer>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

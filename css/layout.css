@@ -1,0 +1,85 @@
+.shell {
+  width: min(var(--page), calc(100% - var(--gutter) * 2));
+  margin-inline: auto;
+}
+
+.studio {
+  display: grid;
+  grid-template-columns: minmax(16rem, 22rem) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: start;
+  padding-top: clamp(1.5rem, 4vh, 3.5rem);
+}
+
+.lede {
+  margin-top: var(--space-4);
+  max-width: 28ch;
+  color: var(--ink-soft);
+  font-size: var(--step-1);
+}
+
+.mast h1 {
+  font-size: var(--step-3);
+  margin-top: var(--space-3);
+  max-width: 12ch;
+}
+
+.side-note {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: var(--step--1);
+  max-width: 34ch;
+}
+
+.side-note strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.work {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.prose {
+  max-width: var(--measure);
+}
+
+.prose p + p,
+.prose li + li {
+  margin-top: 0.8rem;
+}
+
+.prose h2 {
+  font-size: var(--step-2);
+  margin: var(--space-6) 0 var(--space-3);
+}
+
+.prose ul {
+  list-style: disc;
+  padding-left: 1.1rem;
+}
+
+.page-intro {
+  padding-top: clamp(2rem, 6vh, 4rem);
+  max-width: 40rem;
+}
+
+.page-intro h1 {
+  font-size: var(--step-4);
+  margin: var(--space-3) 0 var(--space-4);
+}
+
+@media (max-width: 860px) {
+  .studio {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  .mast h1,
+  .lede {
+    max-width: 22ch;
+  }
+}
