@@ -1,4 +1,4 @@
-const CACHE = "eupheme-v8";
+const CACHE = "eupheme-v9";
 const ASSETS = [
   "./",
   "./index.html",
