@@ -125,11 +125,11 @@ function shortHook(theirs, style) {
   const lower = theirs.toLowerCase();
   const casual = style !== "professional" && style !== "direct";
   if (/\b(dinner|drinks|coffee|lunch)\b/.test(lower)) {
-    if (style === "flirty") return "friday works. i'm already a little distracted";
-    if (style === "romantic") return "friday. you've been on my mind";
+    if (style === "flirty") return "friday works. i'm already picturing the table";
+    if (style === "romantic") return "friday. you've been on my mind, which is inconvenient";
     if (style === "direct") return "Friday works.";
     if (style === "professional") return "Friday works.";
-    return casual ? "friday can work. fair warning, i'll be looking" : "Friday can work.";
+    return casual ? "i can do friday. pick somewhere with bad lighting" : "Friday works.";
   }
   if (/\b(free|tonight|friday|weekend)\b/.test(lower) && /\?/.test(theirs)) {
     if (style === "flirty") return "for you, yeah";
