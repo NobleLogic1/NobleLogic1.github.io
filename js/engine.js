@@ -41,20 +41,20 @@ const STYLE_META = {
 };
 
 const APPEARANCE = {
-  pretty: ["striking", "lovely", "easy to look at"],
-  beautiful: ["beautiful", "quietly stunning", "hard to look away from"],
-  cute: ["cute", "endearing", "unfairly cute"],
-  hot: ["striking", "hard to ignore", "very easy on the eyes"],
-  handsome: ["handsome", "well put together", "sharp"],
-  gorgeous: ["gorgeous", "stunning", "impossible to miss"],
-  sexy: ["magnetic", "striking", "hard not to notice"],
-  good: ["good", "great", "easy on the eyes"],
-  great: ["great", "wonderful", "hard to ignore"],
-  nice: ["nice", "lovely", "easy to like"],
-  fine: ["fine", "good", "worth a second look"],
-  lovely: ["lovely", "beautiful", "genuinely lovely"],
-  adorable: ["adorable", "sweet", "ridiculously cute"],
-  stunning: ["stunning", "breathtaking", "impossible to miss"],
+  pretty: ["pretty", "beautiful", "pretty"],
+  beautiful: ["beautiful", "beautiful", "beautiful"],
+  cute: ["cute", "cute", "cute"],
+  hot: ["good", "gorgeous", "hot"],
+  handsome: ["handsome", "handsome", "sharp"],
+  gorgeous: ["gorgeous", "gorgeous", "gorgeous"],
+  sexy: ["good", "gorgeous", "hot"],
+  good: ["good", "great", "good"],
+  great: ["great", "great", "great"],
+  nice: ["nice", "lovely", "nice"],
+  fine: ["good", "good", "good"],
+  lovely: ["lovely", "beautiful", "lovely"],
+  adorable: ["cute", "sweet", "cute"],
+  stunning: ["stunning", "stunning", "stunning"],
 };
 
 import { parseThread, withContext } from "./context.js";
@@ -73,7 +73,7 @@ export function readLine(raw, contextRaw) {
     style,
     label: STYLE_META[style].label,
     note: thread.them ? `Answers ${thread.them.text}` : STYLE_META[style].note,
-    text: finish(withContext(text ? rewrite(text, style, analysis) : "", style, thread)),
+    text: voice(withContext(text ? rewrite(text, style, analysis) : "", style, thread), style),
   }));
   return { empty: false, analysis, options, thread };
 }
@@ -86,7 +86,7 @@ export function rewriteOnly(raw, style, contextRaw) {
     style,
     label: STYLE_META[style]?.label || style,
     note: STYLE_META[style]?.note || "",
-    text: finish(withContext(text ? rewrite(text, style, analysis) : "", style, thread)),
+    text: voice(withContext(text ? rewrite(text, style, analysis) : "", style, thread), style),
   };
 }
 
@@ -220,15 +220,15 @@ function rewriteYouAre(text, style) {
   const adj = m[1].trim().toLowerCase();
   const word = adj.split(" ")[0];
   const pack = APPEARANCE[word] || [adj, adj, adj];
-  if (style === "flirty") return `You are unfairly ${pack[2]}.`;
-  if (style === "romantic") return `There is something quietly ${pack[1]} about you.`;
-  if (style === "friendly") return `You look really ${pack[0]} — thought you should hear it.`;
-  if (style === "playful") return `Not to make it a whole thing, but you are ${pack[0]}.`;
-  if (style === "warm") return `I mean this plainly: you are ${pack[0]}.`;
-  if (style === "direct") return `You are ${pack[0]}.`;
-  if (style === "soft") return `I keep noticing how ${pack[0]} you are.`;
-  if (style === "professional") return `You present very well.`;
-  return `You are ${pack[0]}.`;
+  if (style === "flirty") return `you're ${pack[2]}`;
+  if (style === "romantic") return `you're really ${pack[1]}`;
+  if (style === "friendly") return `you look ${pack[0]}, btw`;
+  if (style === "playful") return `okay but you're ${pack[0]}`;
+  if (style === "warm") return `you're ${pack[0]}. just saying`;
+  if (style === "direct") return `You're ${pack[0]}.`;
+  if (style === "soft") return `you're really ${pack[0]}`;
+  if (style === "professional") return `You look great.`;
+  return `you're ${pack[0]}`;
 }
 
 function rewriteYouLook(text, style) {
@@ -237,14 +237,14 @@ function rewriteYouLook(text, style) {
   const adj = m[1].trim().toLowerCase();
   const word = adj.split(" ")[0];
   const pack = APPEARANCE[word] || [adj, adj, adj];
-  if (style === "flirty") return `You look unfairly ${pack[2]} right now.`;
-  if (style === "romantic") return `You look ${pack[1]} — the kind that stays with me.`;
-  if (style === "friendly") return `You look really ${pack[0]} today.`;
+  if (style === "flirty") return `you look ${pack[2]} right now`;
+  if (style === "romantic") return `you look really ${pack[1]}`;
+  if (style === "friendly") return `you look ${pack[0]} today`;
   if (style === "direct") return `You look ${pack[0]}.`;
-  if (style === "warm") return `You look ${pack[0]}. I wanted you to know.`;
-  if (style === "playful") return `You look ${pack[0]}, and I am choosing to say so.`;
-  if (style === "professional") return `You look well put together.`;
-  return `You look ${pack[0]}.`;
+  if (style === "warm") return `you look ${pack[0]}`;
+  if (style === "playful") return `you look ${pack[0]}, just saying`;
+  if (style === "professional") return `You look great.`;
+  return `you look ${pack[0]}`;
 }
 
 function rewriteLoveLike(text, style) {
@@ -252,32 +252,32 @@ function rewriteLoveLike(text, style) {
   const like = /^i (?:really |kinda |kind of )?(?:like|am into) you[.!]*$/i.test(text);
   if (!love && !like) return null;
   if (love) {
-    if (style === "romantic") return "I love you. That has not changed.";
-    if (style === "flirty") return "Still completely in love with you, for the record.";
-    if (style === "friendly") return "I love you — just wanted that said out loud.";
+    if (style === "romantic") return "i love you";
+    if (style === "flirty") return "i love you, obviously";
+    if (style === "friendly") return "love you";
     if (style === "direct") return "I love you.";
-    if (style === "warm") return "I love you, and I am glad you are in my life.";
-    if (style === "soft") return "I love you. I hope that lands gently.";
-    return "I love you.";
+    if (style === "warm") return "i love you";
+    if (style === "soft") return "i love you";
+    return "i love you";
   }
-  if (style === "flirty") return "I like you. More than a casual text usually admits.";
-  if (style === "romantic") return "I like you — in the way that makes ordinary days better.";
-  if (style === "friendly") return "I like you. Thought it was worth saying plainly.";
+  if (style === "flirty") return "i like you";
+  if (style === "romantic") return "i really like you";
+  if (style === "friendly") return "i like you";
   if (style === "direct") return "I like you.";
-  if (style === "soft") return "I like you, and I wanted you to hear it without pressure.";
-  if (style === "warm") return "I like you. Spending time with you matters to me.";
-  return "I like you.";
+  if (style === "soft") return "i like you, no pressure";
+  if (style === "warm") return "i like you";
+  return "i like you";
 }
 
 function rewriteMiss(text, style) {
   if (!/^i (?:really |kinda )?miss you[.!]*$/i.test(text)) return null;
-  if (style === "romantic") return "I miss you. The day feels thinner without you in it.";
-  if (style === "flirty") return "I miss you — specifically, and a little impatiently.";
-  if (style === "friendly") return "I miss you. Hope your day is treating you well.";
+  if (style === "romantic") return "i miss you";
+  if (style === "flirty") return "miss you";
+  if (style === "friendly") return "miss you";
   if (style === "direct") return "I miss you.";
-  if (style === "warm") return "I miss you. Thinking of you.";
-  if (style === "soft") return "I miss you. No agenda, just that.";
-  return "I miss you.";
+  if (style === "warm") return "miss you";
+  if (style === "soft") return "i miss you";
+  return "i miss you";
 }
 
 function rewriteApology(text, style) {
@@ -291,25 +291,13 @@ function rewriteApology(text, style) {
   const about = clause && !/^(i |we |that |the |last |being |going )/i.test(clause)
     ? `about ${clause}`
     : clause;
-  if (style === "soft") {
-    return about
-      ? `I’m sorry ${about}. I should have handled that better.`
-      : "I’m sorry. I should have said something sooner.";
-  }
-  if (style === "direct") return about ? `Sorry ${about}.` : "I’m sorry.";
-  if (style === "warm") {
-    return about
-      ? `I’m sorry ${about}. I wanted to say it plainly.`
-      : "I’m sorry. I wanted to say it plainly.";
-  }
-  if (style === "professional") {
-    if (!about) return "Apologies for the delay.";
-    if (/^i\b/i.test(about)) return `Apologies — ${about}. I’ll follow up.`;
-    return `Apologies ${about.startsWith("about") ? about : `for ${about}`}. I’ll follow up.`;
-  }
-  if (style === "friendly") return about ? `Sorry ${about} — that one’s on me.` : "Sorry. That one’s on me.";
-  if (style === "playful") return about ? `That was on me: ${about}.` : "That one was on me.";
-  return about ? `I’m sorry ${about}.` : "I’m sorry.";
+  if (style === "soft") return about ? `sorry ${about}` : "sorry i went quiet";
+  if (style === "direct") return about ? `Sorry ${about}.` : "I'm sorry.";
+  if (style === "warm") return about ? `sorry ${about}` : "sorry";
+  if (style === "professional") return about ? `Sorry ${about}. I'll follow up.` : "Sorry for the delay.";
+  if (style === "friendly") return about ? `sorry ${about}` : "my bad";
+  if (style === "playful") return about ? `that was on me` : "my bad";
+  return about ? `sorry ${about}` : "sorry";
 }
 
 function rewriteThanks(text, style) {
@@ -317,13 +305,13 @@ function rewriteThanks(text, style) {
   if (!m) return null;
   const rest = m[1].replace(/[.!]+$/, "").trim();
   const thing = rest ? ` for ${lowerFirst(rest)}` : "";
-  if (style === "warm") return rest ? `Thank you${thing}. It meant something.` : "Thank you. I don’t take it lightly.";
+  if (style === "warm") return rest ? `thanks${thing}` : "thank you";
   if (style === "professional") return rest ? `Thank you${thing}.` : "Thank you.";
-  if (style === "friendly") return rest ? `Thanks${thing} — really.` : "Thanks. I appreciate it.";
+  if (style === "friendly") return rest ? `thanks${thing}` : "thanks";
   if (style === "direct") return rest ? `Thanks${thing}.` : "Thank you.";
-  if (style === "flirty") return rest ? `Thank you${thing}. You make it look easy.` : "Thank you. Noted, and liked.";
-  if (style === "romantic") return rest ? `Thank you${thing}. I felt looked after.` : "Thank you. I felt it.";
-  return `Thank you${thing}.`;
+  if (style === "flirty") return rest ? `thanks${thing}` : "thank you";
+  if (style === "romantic") return rest ? `thank you${thing}` : "thank you";
+  return `thanks${thing}`;
 }
 
 function rewriteRequest(text, style) {
@@ -333,11 +321,11 @@ function rewriteRequest(text, style) {
   ask = ask.replace(/\b(u)\b/gi, "you").replace(/\b(asap)\b/gi, "as soon as you can");
   if (style === "professional") return `Could you ${ask}?`;
   if (style === "direct") return `Please ${ask}.`;
-  if (style === "warm") return `When you can, would you ${ask}? I’d appreciate it.`;
-  if (style === "friendly") return `Hey — could you ${ask}?`;
-  if (style === "soft") return `Would you be willing to ${ask}?`;
-  if (style === "playful") return `Tiny ask: could you ${ask}?`;
-  return `Could you ${ask}?`;
+  if (style === "warm") return `can you ${ask} when you get a sec?`;
+  if (style === "friendly") return `can you ${ask}?`;
+  if (style === "soft") return `could you ${ask}?`;
+  if (style === "playful") return `tiny ask, can you ${ask}?`;
+  return `can you ${ask}?`;
 }
 
 function rewriteInvite(text, style) {
@@ -345,25 +333,25 @@ function rewriteInvite(text, style) {
   if (dinner) {
     const what = dinner[1].toLowerCase();
     const when = dinner[2] ? ` ${dinner[2]}` : "";
-    if (style === "playful") return `Counteroffer: ${what}${when}. You in?`;
-    if (style === "warm") return `I’d like to get ${what}${when}, if you’re free.`;
+    if (style === "playful") return `${what}${when}?`;
+    if (style === "warm") return `want to get ${what}${when}?`;
     if (style === "direct") return `${cap(what)}${when}?`;
-    if (style === "flirty") return `${cap(what)}${when}. I’m hoping you say yes.`;
-    if (style === "romantic") return `I’d like ${what}${when} with you — unhurried, if we can.`;
-    if (style === "friendly") return `Want to grab ${what}${when}?`;
+    if (style === "flirty") return `${what}${when}? i'm hoping you say yes`;
+    if (style === "romantic") return `want to do ${what}${when}?`;
+    if (style === "friendly") return `want to grab ${what}${when}?`;
     if (style === "professional") return `Are you free for ${what}${when}?`;
-    return `Want to get ${what}${when}?`;
+    return `want to get ${what}${when}?`;
   }
   const hang = text.match(/^(?:want to|wanna|you want to|do you want to)\s+(.+?)(\?)?$/i);
   if (!hang) return null;
   const plan = hang[1].replace(/[.!]+$/, "").trim();
-  if (style === "playful") return `Wild idea: ${plan}. You in?`;
-  if (style === "warm") return `I’d like to ${plan}, if that sounds good.`;
+  if (style === "playful") return `want to ${plan}?`;
+  if (style === "warm") return `want to ${plan}?`;
   if (style === "direct") return `Want to ${plan}?`;
-  if (style === "flirty") return `Want to ${plan}? I’d like that more than I’m playing it.`;
-  if (style === "friendly") return `Want to ${plan}? No pressure either way.`;
-  if (style === "romantic") return `I’d like to ${plan} with you.`;
-  return `Want to ${plan}?`;
+  if (style === "flirty") return `want to ${plan}?`;
+  if (style === "friendly") return `want to ${plan}? no pressure`;
+  if (style === "romantic") return `want to ${plan}?`;
+  return `want to ${plan}?`;
 }
 
 function rewriteLate(text, style) {
@@ -371,11 +359,11 @@ function rewriteLate(text, style) {
   const mins = text.match(/(\d+)\s*(min|mins|minutes)/i);
   const extra = mins ? ` About ${mins[1]} minutes.` : "";
   if (style === "direct") return `Running late.${extra}`.trim();
-  if (style === "professional") return `I’m running behind and will be there shortly.${extra}`.trim();
-  if (style === "friendly") return `Running a few minutes late — on my way.${extra}`.trim();
-  if (style === "warm") return `Sorry, running late. I’m on my way.${extra}`.trim();
-  if (style === "soft") return `I’m behind, and I’m sorry to keep you.${extra}`.trim();
-  return `Running late.${extra}`.trim();
+  if (style === "professional") return `Running a few minutes late.${extra}`.trim();
+  if (style === "friendly") return `running late, on my way`;
+  if (style === "warm") return `sorry, running late. on my way`;
+  if (style === "soft") return `sorry, running late`;
+  return `running late`;
 }
 
 function rewriteConflict(text, style) {
@@ -394,25 +382,17 @@ function rewriteQuestion(text, style, analysis) {
   const q = text.endsWith("?") ? text : `${text.replace(/[.!]+$/, "")}?`;
   if (style === "direct") return q.charAt(0).toUpperCase() + q.slice(1);
   if (style === "friendly") return q.charAt(0).toUpperCase() + q.slice(1);
-  if (style === "warm") return `${q.charAt(0).toUpperCase() + q.slice(1)} Asking because it matters.`;
+  if (style === "warm") return q;
   if (style === "professional") return polish(q);
-  if (style === "soft") return `If you’re open to it — ${lowerFirst(q)}`;
+  if (style === "soft") return q;
   if (style === "playful") return q;
   return q;
 }
 
 function general(text, style) {
-  const polished = polish(text);
-  const base = polished.replace(/[.?!]+$/, "");
-  if (style === "direct") return ensureEnd(base);
-  if (style === "professional") return ensureEnd(polished.replace(/[.?!]+$/, ""));
-  if (style === "friendly") return ensureEnd(base);
-  if (style === "warm") return `${ensureEnd(base)} I mean that.`;
-  if (style === "soft") return `I want to put this gently: ${lowerFirst(ensureEnd(base))}`;
-  if (style === "flirty") return `${ensureEnd(base)} Saying it on purpose.`;
-  if (style === "romantic") return `${ensureEnd(base)} It has been on my mind.`;
-  if (style === "playful") return `${ensureEnd(base)} There. Said it.`;
-  return ensureEnd(base);
+  const base = polish(text).replace(/[.?!]+$/, "");
+  if (style === "direct" || style === "professional") return ensureEnd(base);
+  return base;
 }
 
 function polish(text) {
@@ -428,13 +408,19 @@ function polish(text) {
     .trim();
 }
 
-function finish(text) {
-  let out = polish(text).replace(/\s+/g, " ").trim();
-  out = out.replace(/\bi\b/g, "I");
-  out = out.charAt(0).toUpperCase() + out.slice(1);
-  if (!/[.!?]$/.test(out)) out += ".";
-  out = out.replace(/\?\./g, "?").replace(/!\./g, "!").replace(/\.\./g, ".");
-  return out;
+function voice(text, style) {
+  let out = polish(String(text || "")).replace(/\s+/g, " ").trim();
+  if (!out) return out;
+  const casual = !["professional", "direct"].includes(style);
+  out = out.replace(/\bi\b/g, casual ? "i" : "I");
+  if (!casual) {
+    out = out.charAt(0).toUpperCase() + out.slice(1);
+    if (!/[.!?]$/.test(out)) out += ".";
+  } else {
+    out = out.charAt(0).toLowerCase() + out.slice(1);
+    out = out.replace(/[.]+$/, "");
+  }
+  return out.replace(/\?\./g, "?").replace(/!\./g, "!").replace(/\.\./g, ".");
 }
 
 function ensureEnd(text) {

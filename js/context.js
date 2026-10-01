@@ -30,37 +30,33 @@ export function parseThread(raw) {
 
 export function withContext(line, style, thread) {
   if (!thread?.them) return line;
-  const theirs = thread.them.text.replace(/[.?!]+$/, "");
-  const asking = /\?$/.test(thread.them.text)
-    || /^(do|are|can|want|free|what|when|where)\b/i.test(theirs)
-    || /\b(dinner|drinks|coffee|free|tonight|friday)\b/i.test(theirs);
-  const answer = answerTo(theirs, style);
-  if (!line) return answer;
-  if (asking) return `${answer.replace(/[.]+$/, "")}. ${line}`;
-  if (style === "professional" || style === "direct") return line;
-  return `${line.replace(/[.]+$/, "")} — about “${theirs}.”`;
+  const hook = shortHook(thread.them.text, style);
+  if (!line) return hook;
+  if (!hook) return line;
+  const body = line.replace(/^[A-Z]/, (c) => c.toLowerCase()).replace(/[.]+$/, "");
+  if (body.toLowerCase().includes(hook.toLowerCase().slice(0, 8))) return line;
+  return `${hook}. ${body}`;
 }
 
-function answerTo(theirs, style) {
+function shortHook(theirs, style) {
   const lower = theirs.toLowerCase();
+  const casual = style !== "professional" && style !== "direct";
   if (/\b(dinner|drinks|coffee|lunch)\b/.test(lower)) {
-    if (style === "flirty") return "I'm in. Been hoping you'd ask.";
-    if (style === "romantic") return "I'd like that. Unhurried, if we can.";
-    if (style === "direct") return "Yes.";
-    if (style === "professional") return "Yes, that works.";
-    return "That sounds good.";
+    if (style === "flirty") return "i'm down";
+    if (style === "romantic") return "i'd like that";
+    if (style === "direct") return "Yes";
+    if (style === "professional") return "That works";
+    return casual ? "dinner works" : "Dinner works";
   }
-  if (/\b(free|tonight|friday|weekend|hang)\b/.test(lower)) {
-    if (style === "flirty") return "For you, yes.";
-    if (style === "direct") return "I'm free.";
-    return "I can do that.";
+  if (/\b(free|tonight|friday|weekend)\b/.test(lower) && /\?/.test(theirs)) {
+    if (style === "flirty") return "for you, yeah";
+    if (style === "direct") return "Yes";
+    return casual ? "i can do that" : "I can do that";
   }
-  if (lower.includes("?")) {
-    if (style === "soft") return "Honest answer: yes.";
-    if (style === "direct") return "Yes.";
-    return "Yes — wanted you to hear it in this voice.";
+  if (/\?\s*$/.test(theirs)) {
+    if (style === "direct") return "Yes";
+    if (style === "professional") return "Yes";
+    return casual ? "yeah" : "Yes";
   }
-  if (style === "warm") return "I heard that.";
-  if (style === "direct") return "Noted.";
-  return "I caught that.";
+  return "";
 }
